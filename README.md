@@ -26,9 +26,9 @@ O manualmente en Linux, siguiendo los siguientes pasos:
 
 ```sh
 
-    $ bison -d LMA.y
-    $ flex LMA.l
-    $ gcc LMA.tab.c lex.yy.c -o LMA -lm
-    $ ./LMA
+    $ bison -d ALM.y
+    $ flex ALM.l
+    $ gcc ALM.tab.c lex.yy.c -o ALM -lm
+    $ ./ALM
     
 ```
