@@ -28,11 +28,48 @@ int arregloEstaLleno( int *arr )
 	return 1;
 }
 
-void meterNumero(char*nombre,int pos,int valor)
+// Busca y retorna arreglo por su nombre
+struct Arreglo *buscaArreglo(char*nombre)
 {
+	struct Arreglo *p = arreglos;
 
+	while(p!=NULL)
+	{
+		if(strcmp(p->nombre,nombre) == 0)
+			return p;
+		p = p->next;
+	}
 
+	// Si no existe
+	return NULL;
 }
+
+void dato(char *nombre, int pos)
+{
+	struct Arreglo *p = buscaArreglo(nombre);
+	if(p == NULL)
+	{
+		printf("\nError: El arreglo no existe.\n");
+		exit(1);
+	}
+	pos = pos - 1;
+	printf("\n%i\n",p->numeros[pos]);
+}
+
+void imprimirArreglo(char *nombre)
+{
+	struct Arreglo *p = buscaArreglo(nombre);
+	if(p == NULL)
+	{
+		printf("\nError: El arreglo no existe.\n");
+		exit(1);
+	}
+	printf("\n");
+	for(int i = 0; i < 8; i++)
+		printf("%i ",p->numeros[i]);
+	printf("\n");
+}
+
 // Deja los 0 a la derecha
 void comprimeArreglo(int *arr)
 {
@@ -63,9 +100,68 @@ void comprimeArreglo(int *arr)
 	}
 }
 
+void sacarElemento(char *nombre,int pos)
+{
+	struct Arreglo *p = buscaArreglo(nombre);
+
+	if(p == NULL)
+	{
+		printf("\nError: El arreglo no existe.\n");
+		exit(1);
+	}
+
+	pos = pos - 1;
+
+	p->numeros[pos] = 0;
+	comprimeArreglo(p->numeros);
+}
+
+void meterElemento(char*nombre,int valor,int pos)
+{
+	pos = pos - 1;
+
+	struct Arreglo *p = buscaArreglo(nombre);
+
+	if(p == NULL)
+	{
+		printf("\nError: El arreglo no existe.\n");
+		exit(1);
+	}
+	if(arregloEstaLleno( p->numeros ))
+	{
+		printf("\nError: El arreglo está lleno.\n");
+		exit(1);
+	}
+
+	// Si el espacio está vacio, añadimos directamente
+	if(p->numeros[pos] == 0)
+	{
+		p->numeros[pos] = valor;
+		comprimeArreglo(p->numeros);
+		return;
+	}
+
+	// Movemos números a la derecha
+	for(int i = 7; i > pos; i--)
+	{
+		p->numeros[i] = p->numeros[i-1];
+	}
+	p->numeros[pos] = valor;
+
+
+}
+
+
+
 void iniciarArreglo(char *nombre,int n1,int n2,int n3,int n4,int n5,int n6,int n7,int n8)
 {
 	//printf("Arreglo creado:\n%s = (%i,%i,%i,%i,%i,%i,%i,%i)\n",nombre,n1,n2,n3,n4,n5,n6,n7,n8);
+
+	if(buscaArreglo(nombre) != NULL)
+	{
+		printf("\nError: El arreglo ya existe.\n ");
+		exit(1);
+	}
 
 	// Si es el primer arreglo inicializado
 	if(arreglos == NULL)
@@ -128,12 +224,13 @@ void iniciarArreglo(char *nombre,int n1,int n2,int n3,int n4,int n5,int n6,int n
 	char cval[64];
 }
 
-%token<ival> T_INT_POS
+%token<ival> T_INDICE
 %token<ival> T_INT
 %token<cval> T_VAR
 %token T_COMA T_L T_R T_SALTO
 %token T_PARTIR T_INICIAR T_METER T_SACAR T_MIRAR T_DATO T_FINALIZAR
 
+%type<ival> entero
 
 %start programa
 
@@ -147,17 +244,31 @@ instrucciones:
     | instruccion instrucciones
 
 instruccion: T_INICIAR T_L T_VAR
-								T_COMA T_INT
-								T_COMA T_INT
-								T_COMA T_INT
-								T_COMA T_INT
-								T_COMA T_INT
-								T_COMA T_INT
-								T_COMA T_INT
-								T_COMA T_INT
+								T_COMA entero
+								T_COMA entero
+								T_COMA entero
+								T_COMA entero
+								T_COMA entero
+								T_COMA entero
+								T_COMA entero
+								T_COMA entero
 								T_R T_SALTO  { iniciarArreglo($3,$5,$7,$9,$11,$13,$15,$17,$19); }
-					
+
+					 | T_METER T_L T_VAR T_COMA entero T_COMA T_INDICE T_R T_SALTO { meterElemento($3,$5,$7); }
+
+					 | T_MIRAR T_L T_VAR T_R T_SALTO { imprimirArreglo($3); }
+
+					 | T_SACAR T_L T_VAR T_COMA T_INDICE T_R T_SALTO  { sacarElemento($3,$5);}
+
+					 | T_DATO T_L T_VAR T_COMA T_INDICE T_R T_SALTO  { dato($3,$5);}
+
+
 ;
+
+
+
+entero: T_INT { $$ = $1}
+				| T_INDICE { $$ = $1}
 
 
 %%

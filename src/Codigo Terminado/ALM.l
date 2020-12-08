@@ -9,12 +9,14 @@
 
 %}
 
+indice ([1-8])
 entero ([0-9])+
 letras ([a-zA-Z])*
 
 %%
 
 [ \t]	;              // Ignora los espacios en blanco
+{indice}		         {yylval.ival = atoi(yytext); return T_INDICE;}
 {entero}		         {yylval.ival = atoi(yytext); return T_INT;}
 "L"{letras}{entero}  {strcpy(yylval.cval,yytext); return T_VAR;}
 "\n"		             {return T_SALTO;}
