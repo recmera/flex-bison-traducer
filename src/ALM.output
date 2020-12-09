@@ -1,0 +1,532 @@
+Gramática
+
+    0 $accept: programa $end
+
+    1 programa: %empty
+    2         | T_PARTIR T_SALTO instrucciones T_FINALIZAR T_SALTO
+
+    3 instrucciones: %empty
+    4              | instruccion instrucciones
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+    6            | T_METER T_L T_VAR T_COMA entero T_COMA T_INDICE T_R T_SALTO
+    7            | T_MIRAR T_L T_VAR T_R T_SALTO
+    8            | T_SACAR T_L T_VAR T_COMA T_INDICE T_R T_SALTO
+    9            | T_DATO T_L T_VAR T_COMA T_INDICE T_R T_SALTO
+
+   10 entero: T_INT
+   11       | T_INDICE
+
+
+Terminales con las reglas donde aparecen
+
+    $end (0) 0
+    error (256)
+    T_INDICE <ival> (258) 6 8 9 11
+    T_INT <ival> (259) 10
+    T_VAR <cval> (260) 5 6 7 8 9
+    T_COMA (261) 5 6 8 9
+    T_L (262) 5 6 7 8 9
+    T_R (263) 5 6 7 8 9
+    T_SALTO (264) 2 5 6 7 8 9
+    T_PARTIR (265) 2
+    T_INICIAR (266) 5
+    T_METER (267) 6
+    T_SACAR (268) 8
+    T_MIRAR (269) 7
+    T_DATO (270) 9
+    T_FINALIZAR (271) 2
+
+
+No terminales con las reglas donde aparecen
+
+    $accept (17)
+        on left: 0
+    programa (18)
+        on left: 1 2
+        on right: 0
+    instrucciones (19)
+        on left: 3 4
+        on right: 2 4
+    instruccion (20)
+        on left: 5 6 7 8 9
+        on right: 4
+    entero <ival> (21)
+        on left: 10 11
+        on right: 5 6
+
+
+Estado 0
+
+    0 $accept: . programa $end
+
+    T_PARTIR  desplazar e ir al estado 1
+
+    $default  reduce usando la regla 1 (programa)
+
+    programa  ir al estado 2
+
+
+Estado 1
+
+    2 programa: T_PARTIR . T_SALTO instrucciones T_FINALIZAR T_SALTO
+
+    T_SALTO  desplazar e ir al estado 3
+
+
+Estado 2
+
+    0 $accept: programa . $end
+
+    $end  desplazar e ir al estado 4
+
+
+Estado 3
+
+    2 programa: T_PARTIR T_SALTO . instrucciones T_FINALIZAR T_SALTO
+
+    T_INICIAR  desplazar e ir al estado 5
+    T_METER    desplazar e ir al estado 6
+    T_SACAR    desplazar e ir al estado 7
+    T_MIRAR    desplazar e ir al estado 8
+    T_DATO     desplazar e ir al estado 9
+
+    $default  reduce usando la regla 3 (instrucciones)
+
+    instrucciones  ir al estado 10
+    instruccion    ir al estado 11
+
+
+Estado 4
+
+    0 $accept: programa $end .
+
+    $default  aceptar
+
+
+Estado 5
+
+    5 instruccion: T_INICIAR . T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_L  desplazar e ir al estado 12
+
+
+Estado 6
+
+    6 instruccion: T_METER . T_L T_VAR T_COMA entero T_COMA T_INDICE T_R T_SALTO
+
+    T_L  desplazar e ir al estado 13
+
+
+Estado 7
+
+    8 instruccion: T_SACAR . T_L T_VAR T_COMA T_INDICE T_R T_SALTO
+
+    T_L  desplazar e ir al estado 14
+
+
+Estado 8
+
+    7 instruccion: T_MIRAR . T_L T_VAR T_R T_SALTO
+
+    T_L  desplazar e ir al estado 15
+
+
+Estado 9
+
+    9 instruccion: T_DATO . T_L T_VAR T_COMA T_INDICE T_R T_SALTO
+
+    T_L  desplazar e ir al estado 16
+
+
+Estado 10
+
+    2 programa: T_PARTIR T_SALTO instrucciones . T_FINALIZAR T_SALTO
+
+    T_FINALIZAR  desplazar e ir al estado 17
+
+
+Estado 11
+
+    4 instrucciones: instruccion . instrucciones
+
+    T_INICIAR  desplazar e ir al estado 5
+    T_METER    desplazar e ir al estado 6
+    T_SACAR    desplazar e ir al estado 7
+    T_MIRAR    desplazar e ir al estado 8
+    T_DATO     desplazar e ir al estado 9
+
+    $default  reduce usando la regla 3 (instrucciones)
+
+    instrucciones  ir al estado 18
+    instruccion    ir al estado 11
+
+
+Estado 12
+
+    5 instruccion: T_INICIAR T_L . T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_VAR  desplazar e ir al estado 19
+
+
+Estado 13
+
+    6 instruccion: T_METER T_L . T_VAR T_COMA entero T_COMA T_INDICE T_R T_SALTO
+
+    T_VAR  desplazar e ir al estado 20
+
+
+Estado 14
+
+    8 instruccion: T_SACAR T_L . T_VAR T_COMA T_INDICE T_R T_SALTO
+
+    T_VAR  desplazar e ir al estado 21
+
+
+Estado 15
+
+    7 instruccion: T_MIRAR T_L . T_VAR T_R T_SALTO
+
+    T_VAR  desplazar e ir al estado 22
+
+
+Estado 16
+
+    9 instruccion: T_DATO T_L . T_VAR T_COMA T_INDICE T_R T_SALTO
+
+    T_VAR  desplazar e ir al estado 23
+
+
+Estado 17
+
+    2 programa: T_PARTIR T_SALTO instrucciones T_FINALIZAR . T_SALTO
+
+    T_SALTO  desplazar e ir al estado 24
+
+
+Estado 18
+
+    4 instrucciones: instruccion instrucciones .
+
+    $default  reduce usando la regla 4 (instrucciones)
+
+
+Estado 19
+
+    5 instruccion: T_INICIAR T_L T_VAR . T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_COMA  desplazar e ir al estado 25
+
+
+Estado 20
+
+    6 instruccion: T_METER T_L T_VAR . T_COMA entero T_COMA T_INDICE T_R T_SALTO
+
+    T_COMA  desplazar e ir al estado 26
+
+
+Estado 21
+
+    8 instruccion: T_SACAR T_L T_VAR . T_COMA T_INDICE T_R T_SALTO
+
+    T_COMA  desplazar e ir al estado 27
+
+
+Estado 22
+
+    7 instruccion: T_MIRAR T_L T_VAR . T_R T_SALTO
+
+    T_R  desplazar e ir al estado 28
+
+
+Estado 23
+
+    9 instruccion: T_DATO T_L T_VAR . T_COMA T_INDICE T_R T_SALTO
+
+    T_COMA  desplazar e ir al estado 29
+
+
+Estado 24
+
+    2 programa: T_PARTIR T_SALTO instrucciones T_FINALIZAR T_SALTO .
+
+    $default  reduce usando la regla 2 (programa)
+
+
+Estado 25
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA . entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_INDICE  desplazar e ir al estado 30
+    T_INT     desplazar e ir al estado 31
+
+    entero  ir al estado 32
+
+
+Estado 26
+
+    6 instruccion: T_METER T_L T_VAR T_COMA . entero T_COMA T_INDICE T_R T_SALTO
+
+    T_INDICE  desplazar e ir al estado 30
+    T_INT     desplazar e ir al estado 31
+
+    entero  ir al estado 33
+
+
+Estado 27
+
+    8 instruccion: T_SACAR T_L T_VAR T_COMA . T_INDICE T_R T_SALTO
+
+    T_INDICE  desplazar e ir al estado 34
+
+
+Estado 28
+
+    7 instruccion: T_MIRAR T_L T_VAR T_R . T_SALTO
+
+    T_SALTO  desplazar e ir al estado 35
+
+
+Estado 29
+
+    9 instruccion: T_DATO T_L T_VAR T_COMA . T_INDICE T_R T_SALTO
+
+    T_INDICE  desplazar e ir al estado 36
+
+
+Estado 30
+
+   11 entero: T_INDICE .
+
+    $default  reduce usando la regla 11 (entero)
+
+
+Estado 31
+
+   10 entero: T_INT .
+
+    $default  reduce usando la regla 10 (entero)
+
+
+Estado 32
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero . T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_COMA  desplazar e ir al estado 37
+
+
+Estado 33
+
+    6 instruccion: T_METER T_L T_VAR T_COMA entero . T_COMA T_INDICE T_R T_SALTO
+
+    T_COMA  desplazar e ir al estado 38
+
+
+Estado 34
+
+    8 instruccion: T_SACAR T_L T_VAR T_COMA T_INDICE . T_R T_SALTO
+
+    T_R  desplazar e ir al estado 39
+
+
+Estado 35
+
+    7 instruccion: T_MIRAR T_L T_VAR T_R T_SALTO .
+
+    $default  reduce usando la regla 7 (instruccion)
+
+
+Estado 36
+
+    9 instruccion: T_DATO T_L T_VAR T_COMA T_INDICE . T_R T_SALTO
+
+    T_R  desplazar e ir al estado 40
+
+
+Estado 37
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA . entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_INDICE  desplazar e ir al estado 30
+    T_INT     desplazar e ir al estado 31
+
+    entero  ir al estado 41
+
+
+Estado 38
+
+    6 instruccion: T_METER T_L T_VAR T_COMA entero T_COMA . T_INDICE T_R T_SALTO
+
+    T_INDICE  desplazar e ir al estado 42
+
+
+Estado 39
+
+    8 instruccion: T_SACAR T_L T_VAR T_COMA T_INDICE T_R . T_SALTO
+
+    T_SALTO  desplazar e ir al estado 43
+
+
+Estado 40
+
+    9 instruccion: T_DATO T_L T_VAR T_COMA T_INDICE T_R . T_SALTO
+
+    T_SALTO  desplazar e ir al estado 44
+
+
+Estado 41
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero . T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_COMA  desplazar e ir al estado 45
+
+
+Estado 42
+
+    6 instruccion: T_METER T_L T_VAR T_COMA entero T_COMA T_INDICE . T_R T_SALTO
+
+    T_R  desplazar e ir al estado 46
+
+
+Estado 43
+
+    8 instruccion: T_SACAR T_L T_VAR T_COMA T_INDICE T_R T_SALTO .
+
+    $default  reduce usando la regla 8 (instruccion)
+
+
+Estado 44
+
+    9 instruccion: T_DATO T_L T_VAR T_COMA T_INDICE T_R T_SALTO .
+
+    $default  reduce usando la regla 9 (instruccion)
+
+
+Estado 45
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA . entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_INDICE  desplazar e ir al estado 30
+    T_INT     desplazar e ir al estado 31
+
+    entero  ir al estado 47
+
+
+Estado 46
+
+    6 instruccion: T_METER T_L T_VAR T_COMA entero T_COMA T_INDICE T_R . T_SALTO
+
+    T_SALTO  desplazar e ir al estado 48
+
+
+Estado 47
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero . T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_COMA  desplazar e ir al estado 49
+
+
+Estado 48
+
+    6 instruccion: T_METER T_L T_VAR T_COMA entero T_COMA T_INDICE T_R T_SALTO .
+
+    $default  reduce usando la regla 6 (instruccion)
+
+
+Estado 49
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA . entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_INDICE  desplazar e ir al estado 30
+    T_INT     desplazar e ir al estado 31
+
+    entero  ir al estado 50
+
+
+Estado 50
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero . T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_COMA  desplazar e ir al estado 51
+
+
+Estado 51
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA . entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_INDICE  desplazar e ir al estado 30
+    T_INT     desplazar e ir al estado 31
+
+    entero  ir al estado 52
+
+
+Estado 52
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero . T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_COMA  desplazar e ir al estado 53
+
+
+Estado 53
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA . entero T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_INDICE  desplazar e ir al estado 30
+    T_INT     desplazar e ir al estado 31
+
+    entero  ir al estado 54
+
+
+Estado 54
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero . T_COMA entero T_COMA entero T_R T_SALTO
+
+    T_COMA  desplazar e ir al estado 55
+
+
+Estado 55
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA . entero T_COMA entero T_R T_SALTO
+
+    T_INDICE  desplazar e ir al estado 30
+    T_INT     desplazar e ir al estado 31
+
+    entero  ir al estado 56
+
+
+Estado 56
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero . T_COMA entero T_R T_SALTO
+
+    T_COMA  desplazar e ir al estado 57
+
+
+Estado 57
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA . entero T_R T_SALTO
+
+    T_INDICE  desplazar e ir al estado 30
+    T_INT     desplazar e ir al estado 31
+
+    entero  ir al estado 58
+
+
+Estado 58
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero . T_R T_SALTO
+
+    T_R  desplazar e ir al estado 59
+
+
+Estado 59
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R . T_SALTO
+
+    T_SALTO  desplazar e ir al estado 60
+
+
+Estado 60
+
+    5 instruccion: T_INICIAR T_L T_VAR T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_COMA entero T_R T_SALTO .
+
+    $default  reduce usando la regla 5 (instruccion)

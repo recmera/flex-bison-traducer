@@ -1,5 +1,6 @@
 %{
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -219,6 +220,7 @@ void iniciarArreglo(char *nombre,int n1,int n2,int n3,int n4,int n5,int n6,int n
 }
 %}
 
+
 %union {
 	int ival;
 	char cval[64];
@@ -234,7 +236,12 @@ void iniciarArreglo(char *nombre,int n1,int n2,int n3,int n4,int n5,int n6,int n
 
 %start programa
 
+%define lr.type lalr
+
+
 %%
+
+
 
 programa:
 		| T_PARTIR T_SALTO instrucciones T_FINALIZAR T_SALTO { printf("\nPrograma Finalizado.\n"); exit(1); }
@@ -267,9 +274,8 @@ instruccion: T_INICIAR T_L T_VAR
 
 
 
-entero: T_INT { $$ = $1}
-				| T_INDICE { $$ = $1}
-
+entero: T_INT { $$ = $1;}	| T_INDICE { $$ = $1;}
+;
 
 %%
 
